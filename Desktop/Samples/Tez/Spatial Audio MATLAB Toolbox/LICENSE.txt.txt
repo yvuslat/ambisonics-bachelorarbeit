@@ -1,0 +1,6 @@
+This spatial audio Matlab toolbox was created by Dimitar Kostadinov, under the supervision of Dr. Joshua D. Reiss.
+Comments and improvements to the toolbox should be addressed to josh.reiss@elec.qmul.ac.uk
+
+Users are encouraged to modify and use the toolbox however they see fit, as long as acknowledgment is given to the original authors. 
+It is hoped that the community will use this as the starting point for standardising core spatial audio programming 
+methods, and as a tool to assist new researchers in the field.

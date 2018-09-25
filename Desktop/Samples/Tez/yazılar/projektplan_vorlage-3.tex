@@ -1,0 +1,168 @@
+%================================================================================
+%=============================== DOKUMENTEINSTELLUNGEN ==========================
+%================================================================================
+
+%\documentclass[lang=ngerman,inputenc=ansinew,fontsize=10pt]{ldvarticle}
+\documentclass[lang=ngerman,inputenc=utf8,fontsize=10pt]{ldvarticle}
+
+	%PACKETE
+
+		\usepackage{parskip}
+		\usepackage{subfigure}
+		\usepackage{ifthen}
+		\usepackage{comment}
+		\usepackage{color}
+		\usepackage{colortbl}
+		\usepackage{soul}
+		\usepackage{tikz}
+		\usetikzlibrary{shapes,arrows}
+		\usepackage{tabularx}
+
+
+		\definecolor{lightgray}{rgb}{0.75,0.75,0.75}
+
+
+%================================================================================
+%================================= TITELSEITE ===================================
+%================================================================================
+
+
+\title{Titel der Arbeit}
+\subtitle{Bachelor Thesis}
+\author{Yasemin Vuslat Yavuz}
+
+\date{\today}
+
+\begin{document}
+
+
+	\maketitle
+	\thispagestyle{empty}
+	\vspace*{3cm}
+	\hrule
+
+%\newpage
+
+\section*{Motivation}
+
+Virtual reality (VR) has dominated tech headlines in recent years with its ability to immerse its users in a virtual world. Gaming is the most well-known uses for VR. Moreover, virtual Reality has been adopted to education for teaching methods, to medical training and to military. 
+For Virtual Reality to be truly immersive, it needs convincing sound to match. The immersive graphics need equally immersive 3D audio that replicates the natural listening experience. 
+
+A challenge for a realistic 3D audio in VR is complex virtual scenes with thousands of sounds sources. For each source, the computational workload increases proportionally. To reduce computational complexity while maintaining the same auditory impression for the listener, many different methods have been proposed. 
+
+In this work I am going to use the 3D audio technique ‘ambisonics’, which is a high-resolution surround-sound system developed in the early 70s. Ambisonics has significant advantages compared to other 3D audio techniques. 
+
+\vspace*{1cm}
+\hrule
+
+%\vspace*{1cm}
+
+
+
+\newpage
+\section{Project Description }
+
+\subsection{Why do I use Ambisonics for this work?}
+
+The advantage of Ambisonics over other surround technologies is that ambisonics introduces a format which is independent from the speaker configuration and the number of source signals. It limits the number of the convolutions required for a binaural decoder to 2xN for a number of N loudspeakers. Increase in number of speakers doesn't do any changes in number of convolutions. 
+
+
+\subsection{What are the steps of Ambisonics chain ?}
+
+In this work, input signals will be created in a virtual environment. There is a already existing  Matlab Code for the scene and sound realization and reverberations.  After I write my code for ambisonics, I will use these signals as my input.
+
+First step in Ambisonic chain(first order) is encoding stage that converts the signals into B-format(spherical harmonics), which are agnostic of the loudspeaker arrangement. After this encoding process, some transformation methods will be used for rotation,transformation . This step will be followed by the determining the decoder that will be used and  the location of loudspeakers. Aim of these steps is to be able to decode ambisonics accurately in a set of several loudspeaker signals distributed around the listener to recreate the scene for the listeners. 
+All of these steps of ambisonics (encoding, manipulation and decoding) are made possible by a series of simple matrix multiplications and additions.
+
+
+\subsection{How can I play an Ambisonics signal through headphones?}
+
+After successful decoding, Head Related Transfer Functions will be used to render loudspeaker signals to binaural signals. For the last step , there is also an already Matlab Code.
+
+\subsection{What options are available for determining the head position of the listener?}
+
+To optimally compensate head movements, an Ambisonics rotator is required, which allows rotation in all three axes. These rotation will be done after encoding, when the signal is already transformed to B-Format. 
+
+\subsection{Tools}
+For this thesis I am going to use an open source collection of Matlab functions referred to as the Sofa/ambix binaural rendering(SABRE) toolkit for ambisonics-to-binaural decoding. Database of head related transfer functions (HRTFs) is standardized as ‘SOFA Format’ and avaible  on internet.
+
+
+\subsection{Challenges}
+For a system to work effectively the decoder must be configured for the loudspeaker layout and  decoder must be told where the loudspeakers are located. Depending on the loudspeaker layout this can be relatively straightforward or really quite complex. In the most simple cases, with a perfectly regular layout, the B-format signals are sampled at the loudspeaker positions. Finding the optimal approach might be challenging.
+
+Second and the biggest challenge will be the Head-Tracking for a real-time-system. For this, I have to do more research and find a suitable method. 
+
+\section{Tasks}
+
+\begin{itemize}
+	\item \textbf{Literature review:} Ambisonics and different tools for implementation .
+		
+	\item \textbf{Enviroment:} learning how to work with MATLAB and its syntax.
+		
+
+		
+	\item \textbf{1. Implementation:} Implementing an encoding matrix to transform sound fields into a B-Format.
+	\item \textbf{2.Implementation: }Working on the transformations/normalization/filtering.
+	\item \textbf{3.Implementation:}	Determining an accurate decoding method and the locations of loudspeakers and converting loudspeaker signals to binaural signals to be able to listen it with headphones.
+	\item \textbf{Testing & Writing the thesis:} To evaluate the method, testing the binaural rendering in listening tests and writing the results of the research.
+		
+\end{itemize}
+
+
+
+
+%%%
+
+%\begin{center}
+%\begin{footnotesize}
+%\setlength{\arrayrulewidth}{1,05pt}
+%\begin{tabular}[htb]{|m{0,15\textwidth}|p{.05cm}|p{.05cm}|p{.05cm}|p{.05cm}|p{.05cm}|p{.05cm}|p{.05cm}|p{.05cm}|p{.05cm}|p{.05cm}|}
+	%\hline
+	%\textbf{Monat}& \multicolumn{4}{|c|}{Januar} & \multicolumn{4}{|c|}{Februar} & \multicolumn{2}{|c|}{März}\\
+	%\hline
+	%\textbf{Woche}&\tiny\textbf{1}&\tiny\textbf{2}&\tiny\textbf{3}&\tiny\textbf{4}& \tiny \textbf{5} & \tiny \textbf{6} & \tiny \textbf{7} & \tiny \textbf{8} &  \tiny \textbf{9} & \tiny \textbf{} \\
+	%\hline
+	%\hline
+	%\rowcolor{lightgray} \textbf{Recherchen}& \cellcolor{red} & & & & & & & & & \\
+	%\hline
+	%\rowcolor{lightgray} \textbf{Evaluierung}& & \cellcolor{red} & & & & & & & &\\
+	%\hline
+	%\rowcolor{lightgray} \textbf{Implementierung}& & & \cellcolor{red} & & & & & & &\\
+	%\hline
+	%\rowcolor{lightgray} \textbf{Analyse}& & & & \cellcolor{red} & & & & & & \\
+	%\hline
+	%\rowcolor{lightgray} \textbf{Auswertung}& & & & & \cellcolor{red} & & & & &\\
+	%\hline
+	%\rowcolor{lightgray} \textbf{Ausarbeitung}& & & & & & \cellcolor{red} & & & &\\
+	%\hline
+
+%\end{tabular}
+%\end{footnotesize}
+%\end{center}
+
+%%%
+
+
+
+\section{Änderungen des Projektablaufes}
+
+Project changes will be given in the table below.
+
+
+\begin{tabular}[htbp]{|p{0,025\textwidth}||p{0,06\textwidth}|p{0,4\textwidth}|p{0,37\textwidth}|}
+	\hline
+	\textsc{\#} & \textsc{Date} & \textsc{Change} & \textsc{Reason} \\
+	\hline
+	\hline
+	1 & & & \\[1em]
+	\hline
+	2 & & & \\[1em]
+	\hline
+	3 & & & \\[1em]
+	\hline
+	4 & & & \\[1em]
+	\hline
+	5 & & & \\[1em]
+	\hline
+\end{tabular}
+\end{document}

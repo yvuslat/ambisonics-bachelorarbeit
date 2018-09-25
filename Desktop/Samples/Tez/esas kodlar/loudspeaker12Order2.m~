@@ -1,0 +1,146 @@
+
+%%
+SOFAstart;
+hrtf = SOFAload('HRIR_FULL2DEG.sofa');
+%SOFAinfo(hrtf);
+%SOFAplotGeometry(hrtf);
+%size(hrtf.Data.IR)
+%%
+% Calculate the source position from a listener point of view
+apparentSourceVector = SOFAcalculateAPV(hrtf);
+
+
+%%
+%encodingBFormat
+EncodedSignal = encodeHOA_N3D(2 ,source_signals, source_directions);
+EncodedSignal_cells = mat2cell(EncodedSignal, [repelem(size(EncodedSignal,1)/128,128)], [9]) ;
+%%
+% %% define a 12-speaker uniform setup
+% %A regular icosahedron is a convex polyhedron with 20 faces, 30 edges and 12 vertices
+% [u12, ls_dirs12_rad, mesh12] = platonicSolid('icosahedron');
+% ls_dirs12 = ls_dirs12_rad*180/pi;
+% %ls_dirs12 
+% %90.0000   31.7175
+% %  -90.0000   31.7175
+% %   90.0000  -31.7175
+% %  -90.0000  -31.7175
+% %        0   58.2825
+% %        0  -58.2825
+% % 180.0000   58.2825
+% % 180.0000  -58.2825
+% %  31.7175         0
+% % -31.7175         0
+% % 148.2825         0
+% % -148.2825         0
+% 
+% %%
+% % get ALLRAD decoder
+% % Max-rE weighting for the decoder
+% MAXRE_ON = 1;
+% D_allrad12 = ambiDecoder(ls_dirs12, 'allrad', MAXRE_ON);
+% %
+% %decodingto12load & creating loudspeaker signals
+% lssig = decodeHOA_N3D(EncodedSignal, D_allrad12);
+% signal1 = lssig(:,1);
+% signal2 = lssig(:,2);
+% signal3 = lssig(:,3);
+% signal4 = lssig(:,4);
+% signal5 = lssig(:,5);
+% signal6 = lssig(:,6);
+% signal7 = lssig(:,7);
+% signal8 = lssig(:,8);
+% signal9 = lssig(:,9);
+% signal10 = lssig(:,10);
+% signal11 = lssig(:,11);
+% signal12 = lssig(:,12);
+% 
+% %%
+% %binaural rendering
+% soundOutput1 = [conv(squeeze(hrtf.Data.IR(4034, 1, :)), signal1) ...
+%                conv(squeeze(hrtf.Data.IR(4034, 2, :)), signal1)];
+%            
+% soundOutput2 = [conv(squeeze(hrtf.Data.IR(12044, 1, :)), signal2) ...
+%                conv(squeeze(hrtf.Data.IR(12044, 2, :)), signal2)];
+% 
+% soundOutput3 = [conv(squeeze(hrtf.Data.IR(4066, 1, :)), signal3) ...
+%                conv(squeeze(hrtf.Data.IR(4066, 2, :)), signal3)];           
+% 
+% soundOutput4 = [conv(squeeze(hrtf.Data.IR(12076, 1, :)), signal4) ...
+%                conv(squeeze(hrtf.Data.IR(12076, 2, :)), signal4)];
+% 
+% soundOutput5 = [conv(squeeze(hrtf.Data.IR(16, 1, :)), signal5) ...
+%                conv(squeeze(hrtf.Data.IR(16, 2, :)), signal5)];
+% 
+% soundOutput6 = [conv(squeeze(hrtf.Data.IR(74, 1, :)), signal6) ...
+%                conv(squeeze(hrtf.Data.IR(74, 2, :)), signal6)];
+% 
+% soundOutput7 = [conv(squeeze(hrtf.Data.IR(8026, 1, :)), signal7) ...
+%                conv(squeeze(hrtf.Data.IR(8026, 2, :)), signal7)];  
+%            
+% soundOutput8 = [conv(squeeze(hrtf.Data.IR(8084, 1, :)), signal8) ...
+%                conv(squeeze(hrtf.Data.IR(8084, 2, :)), signal8)];  
+% 
+% soundOutput9 = [conv(squeeze(hrtf.Data.IR(1469, 1, :)), signal9) ...
+%                conv(squeeze(hrtf.Data.IR(1469, 2, :)), signal9)];  
+% 
+% soundOutput10 = [conv(squeeze(hrtf.Data.IR(14641, 1, :)), signal10) ...
+%                conv(squeeze(hrtf.Data.IR(14641, 2, :)), signal10)]; 
+% 
+% soundOutput11 = [conv(squeeze(hrtf.Data.IR(6631, 1, :)), signal11) ...
+%                conv(squeeze(hrtf.Data.IR(6631, 2, :)), signal11)];  
+%  
+% soundOutput12 = [conv(squeeze(hrtf.Data.IR(9479, 1, :)), signal12) ...
+%                conv(squeeze(hrtf.Data.IR(9479, 2, :)), signal12)];            
+% 
+% %%
+% %Listening all the binaural recording
+% 
+% soundOutputogether12 = soundOutput1+soundOutput2+soundOutput3 +soundOutput4 + soundOutput5 + soundOutput6 + soundOutput7 + soundOutput8 + soundOutput9 + soundOutput10 + soundOutput11 + soundOutput12;
+%           
+% %%
+% 
+% 
+% soundsc(soundOutputogether12,48000); 
+
+%% define a 12-speaker uniform setup
+    %A regular icosahedron is a convex polyhedron with 20 faces, 30 edges and 12 vertices
+
+    [~, ls_dirs_rad] = platonicSolid('icosahedron');
+    ls_dirs = ls_dirs_rad*180/pi;
+    ls_num = size(ls_dirs,1);
+
+    %%
+    % get ALLRAD decoder
+    % Max-rE weighting for the decoder
+    MAXRE_ON = 1;
+    D_allrad12 = ambiDecoder(ls_dirs12, 'allrad', MAXRE_ON, 2);
+
+    %% 
+    %%decodingto4load & creating loudspeaker signals
+    lssig = decodeHOA_N3D(EncodedSignal, D_allrad12);
+
+    [~,indices] = min(sum(abs(repmat(apparentSourceVector(:,1:2),1,1,ls_num) - permute(repmat(ls_dirs,1,1,size(apparentSourceVector,1)),[3,2,1])) , 2));
+
+    indices = squeeze(indices);
+    %%
+    %binaural rendering
+
+
+    soundOutput = [conv(squeeze(hrtf.Data.IR(indices(1), 1, :)), lssig(:,1)) ...
+                   conv(squeeze(hrtf.Data.IR(indices(1), 2, :)), lssig(:,1))];
+
+
+
+    for i=2:size(indices,2)
+
+        soundOutput = soundOutput + [conv(squeeze(hrtf.Data.IR(indices(i), 1, :)), lssig(:,i)) ...
+                   conv(squeeze(hrtf.Data.IR(indices(i), 2, :)), lssig(:,i))];
+    end
+
+
+    %%
+    %Listening all the binaural recording
+    soundsc(soundOutput,48000); 
+    %dispaudio()
+
+end

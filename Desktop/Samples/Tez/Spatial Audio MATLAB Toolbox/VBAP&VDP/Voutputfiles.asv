@@ -1,0 +1,18 @@
+function res=VBAPoutputfiles(funky,Fs,sp_delay,sp_gain,num_sp,filename);
+% Returns wave file for each speaker         
+% funky - wave array
+% f - Frequency (44 100) 
+% sp_delay - array with delays
+% sp_gain - array with gains
+% num_sp - number of speakers
+
+for j=1:1:num_sp
+    funky1=funky*sp_gain(j);
+    for i=1:1:sp_delay(j)
+        funky1(i,1)=0;
+        funky1(i,2)=0;
+    end
+    p=strcat(filename, +j+'.wav');
+    filename1=strcat(filename, +j+'.wav');
+    wavwrite(funky1,Fs,filename1);
+end
