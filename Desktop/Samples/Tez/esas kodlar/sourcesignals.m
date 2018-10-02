@@ -11,9 +11,9 @@
 [y2,Fs2] = audioread('HellOfAGuy_GitL.wav' , [1,480000*3]); 
 [y3 ,Fs3] = audioread('HellOfAGuy_Voc.wav', [1,480000*3]);
 %source_signals = [y1 y2 y3];
-X_src = [([4.6; 2.25; 1.65]),([4; 2.25; 1.65]),([3; 2.25; 1.65])];
+X_src = [([4.2; 2.25; 1.65]),([2; 2.25; 1.65]),([6; 3; 1.65])];
 
-%%
+%%ç
 %ISM
 %clear all
 
